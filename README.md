@@ -68,6 +68,10 @@ python setup.py install
 mqtt2mysql
 ```
 
+## Changelog
+
+- 0.1.0 - Initial version
+
 ## TODO
 
 - Connect to SSL-enabled MQTT brokers with certificate
