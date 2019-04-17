@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="mqtt2mysql",
-    version="0.1.0",
+    version="0.1.1",
     author="David Lorenzo",
     description="A tool to save all the MQTT messages on a MySQL/MariaDB database",
     long_description="Store all the MQTT messages of a broker on a MySQL/MariaDB database. "

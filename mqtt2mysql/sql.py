@@ -2,6 +2,7 @@
 # Native libraries
 import os
 import atexit
+from traceback import format_exc
 from time import time
 from typing import List
 from collections import namedtuple
@@ -20,6 +21,7 @@ DATABASE = os.getenv("SQL_DATABASE")
 USER = os.getenv("SQL_USER")
 PASSWORD = os.getenv("SQL_PASSWORD")
 CHARSET = os.getenv("SQL_CHARSET", "utf8mb4")
+QUEUE_FREQ = int(os.getenv("SQL_QUEUE_FREQ", 30))
 
 SQL_CREATE_QUERIES = (
     """CREATE TABLE IF NOT EXISTS `mqtt_topics` (
@@ -53,9 +55,9 @@ SQL_CREATE_QUERIES = (
     KEY_BLOCK_SIZE=8
     ENGINE=InnoDB;""",
     """CREATE OR REPLACE VIEW `messages` AS
-        SELECT mqtt.id, mqtt_topics.topic, mqtt.payload, mqtt.qos, mqtt.timestamp, mqtt.ssl
-        FROM `mqtt` JOIN `mqtt_topics` ON mqtt.topic = mqtt_topics.id
-        GROUP BY mqtt.id;
+        SELECT mqtt.id, mqtt_topics.topic, mqtt.payload, mqtt.qos, mqtt.ssl, FROM_UNIXTIME(mqtt.timestamp) AS datetime
+        FROM `mqtt` JOIN `mqtt_topics` ON mqtt.topic = mqtt_topics.id GROUP BY mqtt.id
+        ORDER BY mqtt.timestamp DESC;
     """
 )
 
@@ -125,8 +127,8 @@ class MySQL:
                 inserted = cursor.execute(SQL_INSERT_MESSAGE, (topic, payload, qos, timestamp, int(ssl)))
             if commit:
                 self.connection.commit()
-        except pymysql.Error as ex:
-            print(f"Can't insert MQTT message on DB ({ex})")
+        except pymysql.Error:
+            print(f"Can't insert MQTT message on DB:\n{format_exc()}")
         else:
             print(f"Inserted MQTT @ {topic} : {payload[:50]}{' ...' if len(payload) > 50 else ''}")
         finally:
@@ -174,7 +176,7 @@ class MySQL:
                 not_inserted_messages.clear()
 
             # Sleep thread using the stop event
-            self.queue_thread_stop_event.wait(10)
+            self.queue_thread_stop_event.wait(QUEUE_FREQ)
 
     def save_message(
             self, message: mqtt.MQTTMessage, ssl: bool = False

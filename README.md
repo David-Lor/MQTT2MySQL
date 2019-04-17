@@ -71,6 +71,7 @@ mqtt2mysql
 ## Changelog
 
 - 0.1.0 - Initial version
+- 0.1.1 - New parameter to set the queue processing frequency; Show complete traceback when a message can't be inserted on the database; Switch timestamp to SQL Datetime datatype on "messages" SQL view
 
 ## TODO
 
