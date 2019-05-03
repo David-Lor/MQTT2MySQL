@@ -75,4 +75,5 @@ mqtt2mysql
 
 ## TODO
 
+- Reconnect when connection to the MySQL DB server is lost. Currently the whole script crashes/fails when this happens.
 - Connect to SSL-enabled MQTT brokers with certificate
