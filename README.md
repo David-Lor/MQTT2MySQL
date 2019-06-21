@@ -1,6 +1,8 @@
 # MQTT2MongoDB
 
-A simple Python project that listen to one or more MQTT topics and save all the incoming messages on a MySQL/MariaDB database, as some sort of logger.
+A simple Python service that listen to one or more MQTT topics and save all the incoming messages on a MySQL/MariaDB 
+database, as some sort of logger. Very useful to keep a log of your MQTT messages and create statistics or even 
+graphs with Grafana or any other similar tool.
 
 ## Requirements
 
@@ -8,8 +10,8 @@ A simple Python project that listen to one or more MQTT topics and save all the 
 - A running MQTT broker
 - A working MySQL/MariaDB server, with a database created and permissions to create tables and insert data on it
 - Libraries:
-    * [pymysql](https://github.com/PyMySQL/PyMySQL)
-    * [paho-mqtt](https://pypi.org/project/paho-mqtt)
+    * [aiomysql](https://github.com/aio-libs/aiomysql)
+    * [aiomqtt](https://github.com/mossblaser/aiomqtt)
 - Docker recommended if available - you can use the [Python Autoclonable App Docker image](https://hub.docker.com/r/davidlor/python-autoclonable-app)
 - Tested under Linux only
 
@@ -28,7 +30,7 @@ However, `SQL_USER`, `SQL_DATABASE` and `SQL_PASSWORD` don't have default values
 
 ### Using Docker and the Python Autoclonable App image
 
-This is the most preferred way to run MQTT2MySQL, if Docker is available.
+This is the recommended way to run MQTT2MySQL, if Docker is available.
 
 ```bash
 docker run -d -e GIT_REPOSITORY:https://github.com/David-Lor/MQTT2MySQL.git -e SQL_USER:root -e SQL_PASS:1234 -e SQL_DATABASE:mqtt --name mqtt2mysql davidlor/python-autoclonable-app
@@ -49,11 +51,11 @@ nano MQTT2MySQL/.env
 # Run the app
 python MQTT2MySQL
 ```
-IMPORTANT: Rename the `sample.env` file to `.env` and properly et the variables inside.
+IMPORTANT: Rename the `sample.env` file to `.env` and properly set the variables inside.
 
 ### Without Docker, installing
 
-This has not been tested.
+This method has not been tested.
 
 ```bash
 git clone https://github.com/David-Lor/MQTT2MySQL.git
@@ -70,8 +72,9 @@ mqtt2mysql
 
 ## Changelog
 
-- 0.1.0 - Initial version
+- 1.0.1 - Switch to aiomysql and aiomqtt to run async.
 - 0.1.1 - New parameter to set the queue processing frequency; Show complete traceback when a message can't be inserted on the database; Switch timestamp to SQL Datetime datatype on "messages" SQL view
+- 0.1.0 - Initial version
 
 ## TODO
 
