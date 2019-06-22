@@ -29,6 +29,8 @@ def load_settings(*args, **kwargs) -> Dict:
         MQTT_QOS: int(getenv(MQTT_QOS, DEFAULT_MQTT_QOS)),
         MQTT_TOPICS: _parse_topics(getenv(MQTT_TOPICS)) or DEFAULT_MQTT_TOPICS,
         MQTT_TOPICS_BLACKLIST: _parse_topics(getenv(MQTT_TOPICS_BLACKLIST)),
+        MQTT_SKIP_RETAINED: int(getenv(MQTT_SKIP_RETAINED, DEFAULT_MQTT_SKIP_RETAINED)),
+        MQTT_SKIP_EMPTY: int(getenv(MQTT_SKIP_EMPTY, DEFAULT_MQTT_SKIP_EMPTY)),
 
         SQL_HOST: getenv(SQL_HOST, DEFAULT_SQL_HOST),
         SQL_PORT: int(getenv(SQL_PORT, DEFAULT_SQL_PORT)),
@@ -36,4 +38,6 @@ def load_settings(*args, **kwargs) -> Dict:
         SQL_USER: getenv(SQL_USER),
         SQL_PASSWORD: getenv(SQL_PASSWORD),
         SQL_CHARSET: getenv(SQL_CHARSET, DEFAULT_SQL_CHARSET),
+        SQL_CONNECT_TIMEOUT: int(getenv(SQL_CONNECT_TIMEOUT, DEFAULT_SQL_CONNECT_TIMEOUT)),
+        SQL_INSERT_RETRY_DELAY: int(getenv(SQL_INSERT_RETRY_DELAY, DEFAULT_SQL_INSERT_RETRY_DELAY)),
     }
