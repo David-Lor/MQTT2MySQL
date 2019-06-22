@@ -50,6 +50,8 @@ class MySQLClient:
         try:
             if not self.connection:
                 await self.connect()
+            else:
+                await self.connection.ping(reconnect=True)
 
             async with self.connection.cursor() as cursor:
                 # Insert topic
@@ -62,7 +64,6 @@ class MySQLClient:
 
                 await self.connection.commit()
                 print("Inserted!", message)
-
         except Exception as ex:
             # On Error: retry after some time putting the message on the queue again
             print("Error inserting", message, ex)
