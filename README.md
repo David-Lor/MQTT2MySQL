@@ -31,7 +31,7 @@ However, `SQL_USER`, `SQL_DATABASE` and `SQL_PASSWORD` don't have default values
 This is the most preferred way to run MQTT2MySQL, if Docker is available.
 
 ```bash
-docker run -d -e GIT_REPOSITORY:https://github.com/David-Lor/MQTT2MySQL.git -e SQL_USER:root -e SQL_PASS:1234 -e SQL_DATABASE:mqtt --name mqtt2mysql davidlor/python-autoclonable-app
+docker run -d -e GIT_REPOSITORY:https://github.com/David-Lor/MQTT2MySQL.git -e SQL_USER:root -e SQL_PASSWORD:1234 -e SQL_DATABASE:mqtt --name mqtt2mysql davidlor/python-autoclonable-app
 ```
 IMPORTANT: Set all the required env variables with the `-e` option, following the examples provided above.
 
